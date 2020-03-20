@@ -10,7 +10,7 @@ services:
   turn:
     build: ./turn
     environment:
-      - REALM=localhost
+      - REALM=bitoker.ru
     ports:
       - "3478:3478/udp"
     volumes:
