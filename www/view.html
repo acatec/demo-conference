@@ -5,6 +5,9 @@
 <button id="toggleVideo">
     Toggle
 </button>
+
+<video id="localVideo" controls="true" muted="">
+</video>
 <div id="remoteVideos">
 </div>
 
@@ -37,6 +40,28 @@
         }
     }
 
+    let pionSession = new PionSession(SIGNALER_URI, '', {
+        iceServers: [
+            {
+                urls: 'stun:bitoker.ru',
+            }
+        ],
+        mandatory: {OfferToReceiveVideo: true, OfferToReceiveAudio: true}
+    })
+
+    pionSession.eventHandler = event => {
+        switch (event.type) {
+            case PionEvents.MEDIA_START:
+                addRemoteVideo(event.media)
+                break
+            case PionEvents.MEDIA_STOP:
+                removeRemoteVideo(event.media)
+                break
+            default:
+                console.warn(event)
+        }
+    }
+    pionSession.start()
 </script>
 </body>
 </html>
